@@ -11,6 +11,7 @@ import i18n from "./includes/i18n";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import "./registerServiceWorker";
+import GlobalComponents from "./includes/_globals";
 
 let app;
 
@@ -23,6 +24,7 @@ auth.onAuthStateChanged(() => {
     app.use(store);
     app.use(router);
     app.use(VeeValidatePlugin);
+    app.use(GlobalComponents);
     app.directive("icon", Icon);
     app.mount("#app");
   }

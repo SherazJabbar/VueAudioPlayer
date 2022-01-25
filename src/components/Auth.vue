@@ -86,7 +86,9 @@ export default {
     AppRegisterForm,
   },
   computed: {
-    ...mapState(["authModalShow"]),
+    ...mapState({
+      authModalShow: (state) => state.auth.authModalShow,
+    }),
   },
   methods: {
     ...mapMutations(["toggleAuthModal"]),

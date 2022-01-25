@@ -1,12 +1,6 @@
 <template>
   <!-- Registration Form -->
-  <div
-    class="text-white text-center font-bold p-5 mb-4"
-    v-if="reg_show_alert"
-    :class="reg_alert_variant"
-  >
-    {{ reg_alert_msg }}
-  </div>
+
   <vee-form
     :validation-schema="schema"
     @submit="register"
@@ -110,6 +104,8 @@
 </template>
 
 <script>
+import { useToast } from "vue-toastification";
+
 export default {
   name: "RegisterForm",
   data() {
@@ -128,33 +124,25 @@ export default {
         country: "USA",
       },
       reg_in_submission: false,
-      reg_show_alert: false,
-      reg_alert_variant: "bg-blur-500",
-      reg_alert_msg: "Please Wait! Your account is being created.",
     };
   },
   methods: {
     async register(values) {
       // vee validate Form component keep track of the input values
       // therefore we do not need v-model , we need v-model when using simple HTML form tag
-      this.reg_show_alert = true;
+      // this.reg_show_alert = true;
       this.reg_in_submission = true;
-      this.reg_alert_variant = "bg-blur-500";
-      this.reg_alert_msg = "Please wait! Your account is being created.";
+      const toast = useToast();
 
       try {
         await this.$store.dispatch("register", values);
       } catch (error) {
-        this.reg_in_submission = false;
-        this.reg_alert_variant = "bg-red-500";
-        this.reg_alert_msg =
-          "An unexpected error occured. Please try again later.";
+        toast.warning("Something went wrong! Try Again");
         return;
       }
 
-      this.reg_alert_variant = "bg-green-500";
-      this.reg_alert_msg = "Success! Your account has been created";
       window.location.reload();
+      toast.success("You are successfully registered!");
     },
   },
 };
